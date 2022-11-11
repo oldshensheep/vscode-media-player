@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      .wrapper {
+        overflow: hidden;
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        flex-direction: column;
+      }
+      .wrapper > video {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <video id="player" class="player" src="${videoWebUrI}">
+        Video not supported
+      </video>
+    </div>
+    <script>
+      const video = document.getElementById("player");
+
+      video.play();
+
+      video.addEventListener("pointermove", function (e) {
+        video.controls = true;
+        hideControls();
+      });
+      video.addEventListener("click", function (e) {
+        video.controls = true;
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+        hideControls();
+      });
+
+      const hideControls = debounce(() => {
+        video.controls = false;
+      }, 1000);
+
+      function debounce(func, delay) {
+        let timeout;
+
+        return function () {
+          let context = this;
+          let args = arguments;
+
+          clearTimeout(timeout);
+          timeout = setTimeout(function () {
+            func.apply(context, args);
+          }, delay);
+        };
+      }
+    </script>
+  </body>
+</html>
